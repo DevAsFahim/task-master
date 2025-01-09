@@ -1,16 +1,27 @@
 import { AddTaskModal } from "@/components/modules/tasks/AddTaskModal";
-import TaskCard from "@/components/modules/tasks/taskCard";
-import { selectTasks } from "@/redux/features/task/taskSlice";
-import { useAppSelector } from "@/redux/hooks";
+import TaskCard from "@/components/modules/tasks/TaskCard";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { selectTasks, updateFilter } from "@/redux/features/task/taskSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const Tasks = () => {
   const tasks = useAppSelector(selectTasks);
+  const dispatch = useAppDispatch();
   console.log(tasks);
 
   return (
     <div className="max-w-7xl mx-auto px-5 mt-20">
-      <div className="flex justify-between items-center">
-        <h1>Tasks</h1>
+      <div className="flex justify-end items-center gap-5">
+        <h1 className="mr-auto">Tasks</h1>
+        <Tabs defaultValue="all">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger onClick={() => dispatch(updateFilter('all'))} value="all">All</TabsTrigger>
+            <TabsTrigger onClick={() => dispatch(updateFilter('low'))} value="low">Low</TabsTrigger>
+            <TabsTrigger onClick={() => dispatch(updateFilter('medium'))} value="medium">Medium</TabsTrigger>
+            <TabsTrigger onClick={() => dispatch(updateFilter('high'))} value="high">High</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         <AddTaskModal />
       </div>
 

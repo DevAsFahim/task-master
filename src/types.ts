@@ -3,6 +3,11 @@ export interface ITask {
   title: string;
   description: string;
   dueDate: string;
-  isComplete: boolean;
-  priority: "High" | "Medium" | "Low";
+  isCompleted: boolean;
+  priority: "high" | "medium" | "low";
+}
+
+export interface IUser {
+  id: string;
+  name: string;
 }
