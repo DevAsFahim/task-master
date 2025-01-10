@@ -43,7 +43,7 @@ export function AddTaskModal() {
   const [open, setOpen] = useState(false);
   const form = useForm();
 
-  const [createTask, { data, isLoading, isError }] = useCreateTaskMutation();
+  const [createTask, { data }] = useCreateTaskMutation();
 
   console.log("data", data);
 
