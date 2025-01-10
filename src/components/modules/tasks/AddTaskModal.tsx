@@ -31,10 +31,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { addTask } from "@/redux/features/task/taskSlice";
-import { selectUser } from "@/redux/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { ITask } from "@/types";
+import { useCreateTaskMutation } from "@/redux/api/baseApi";
+// import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+// import { ITask } from "@/types";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
@@ -42,13 +41,21 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTaskModal() {
   const [open, setOpen] = useState(false);
-  const users = useAppSelector(selectUser);
   const form = useForm();
 
-  const dispatch = useAppDispatch();
+  const [createTask, { data, isLoading, isError }] = useCreateTaskMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    dispatch(addTask(data as ITask));
+  console.log("data", data);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const taskData = {
+      ...data,
+      isCompleted: false,
+    };
+
+    const res = await createTask(taskData).unwrap;
+    console.log("inside submit", res);
+
     setOpen(false);
     form.reset();
   };
@@ -117,7 +124,7 @@ export function AddTaskModal() {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="assignedTo"
               render={({ field }) => (
@@ -133,6 +140,7 @@ export function AddTaskModal() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
+                      user name
                       {users.map((user) => (
                         <SelectItem value={user.id}>{user.name}</SelectItem>
                       ))}
@@ -140,7 +148,7 @@ export function AddTaskModal() {
                   </Select>
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}
